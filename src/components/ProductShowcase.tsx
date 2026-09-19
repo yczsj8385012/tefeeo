@@ -369,88 +369,7 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
           </div>
         </div>
 
-        {/* Photo Upload & Display Mode Action Toolbar */}
-        <div className="mb-8 p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center shrink-0 border border-red-100">
-              <Camera className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="text-xs sm:text-sm font-bold text-slate-900 flex flex-wrap items-center gap-2">
-                <span>{t.products.photoManageTitle || '商品包装实拍照片管理'}</span>
-                {Object.keys(productPhotos).length > 0 ? (
-                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1">
-                    <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                    <span>
-                      {Object.keys(productPhotos).length} {t.products.photosSavedCount || 'photos saved'}
-                    </span>
-                  </span>
-                ) : (
-                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
-                    {t.products.clickToUpload || '点击卡片底部按钮即可上传'}
-                  </span>
-                )}
-              </div>
-              <p className="text-xs text-slate-500 mt-0.5">
-                {t.products.photoManageDesc || '已上传照片会自动永久保存在您当前的浏览器中。点击卡片底部「替换实拍原图」可随时更新或补传。'}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto justify-end flex-wrap">
-            {/* Aspect fit mode toggle */}
-            <div className="flex items-center rounded-lg border border-slate-200 p-0.5 bg-slate-50 text-xs">
-              <button
-                onClick={() => setImageFitMode('contain')}
-                className={`px-2.5 py-1 rounded-md font-medium transition-all cursor-pointer ${
-                  imageFitMode === 'contain'
-                    ? 'bg-white text-slate-900 shadow-2xs font-bold'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-                title={t.products.containMode || '原图完整'}
-              >
-                {t.products.containMode || '原图完整 (等比)'}
-              </button>
-              <button
-                onClick={() => setImageFitMode('cover')}
-                className={`px-2.5 py-1 rounded-md font-medium transition-all cursor-pointer ${
-                  imageFitMode === 'cover'
-                    ? 'bg-white text-slate-900 shadow-2xs font-bold'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-                title={t.products.coverMode || '铺满模式'}
-              >
-                {t.products.coverMode || '铺满模式'}
-              </button>
-            </div>
-
-            {/* Export Backup button */}
-            {Object.keys(productPhotos).length > 0 && (
-              <button
-                onClick={handleExportPhotos}
-                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-xs font-semibold text-emerald-800 transition-colors cursor-pointer"
-                title={t.products.exportBackup || '下载备份'}
-              >
-                <Download className="w-3.5 h-3.5" />
-                <span>{t.products.exportBackup || '下载备份'}</span>
-              </button>
-            )}
-
-            {/* Reset button if any photos uploaded */}
-            {Object.keys(productPhotos).length > 0 && (
-              <button
-                onClick={handleResetProductPhotos}
-                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
-                title={t.products.resetPhotos || '重置'}
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">{t.products.resetPhotos || '重置'}</span>
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Results counter */}
+        {/* Category Filter and Counter Bar */}
         <div className="flex items-center justify-between text-xs text-slate-500 mb-6 px-1">
           <span>
             <strong className="text-slate-900">{filteredProducts.length}</strong> {t.products.itemsFoundSuffix || '款主力商品与规格'}
@@ -466,7 +385,6 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {filteredProducts.map((product) => {
             const photoUrl = productPhotos[product.id] || product.imageUrl;
-            const isProprietary = product.brandType === 'proprietary_brand';
 
             return (
               <div
@@ -475,18 +393,7 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
                 className="group rounded-2xl p-5 transition-all duration-300 border flex flex-col justify-between bg-white border-slate-200/90 hover:border-slate-300 hover:shadow-lg"
               >
                 <div>
-                  {/* Hidden File Input for this specific product */}
-                  <input
-                    ref={(el) => {
-                      fileInputRefs.current[product.id] = el;
-                    }}
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={(e) => handleProductPhotoUpload(product.id, e)}
-                  />
-
-                  {/* Top Badge & Live Status (Identical to Retail Stores card) */}
+                  {/* Top Badge & Live Status */}
                   <div className="flex items-center justify-between mb-3.5">
                     <span className="text-[11px] font-bold px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 border border-slate-200 truncate max-w-[140px]">
                       {getLocalizedCategory(product.category, currentLang)}
@@ -497,18 +404,16 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
                     </span>
                   </div>
 
-                  {/* Product Photo Container (Identical to Retail Stores card) */}
+                  {/* Product Photo Container */}
                   <div className="relative h-48 rounded-xl overflow-hidden mb-4 bg-slate-100 border border-slate-200 flex flex-col justify-between group-hover:border-red-400 transition-colors">
                     {photoUrl ? (
-                      /* Real Uploaded Photo View */
+                      /* Real Photo View */
                       <div className="relative w-full h-full bg-slate-900 flex items-center justify-center overflow-hidden">
                         <img
                           src={photoUrl}
                           alt={product.name}
                           referrerPolicy="no-referrer"
-                          className={`w-full h-full transition-transform duration-300 group-hover:scale-105 ${
-                            imageFitMode === 'contain' ? 'object-contain' : 'object-cover'
-                          }`}
+                          className="w-full h-full transition-transform duration-300 group-hover:scale-105 object-contain"
                         />
 
                         {/* Top Watermark Tag */}
@@ -525,32 +430,22 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
                               e.stopPropagation();
                               setLightboxProduct({ product, photoUrl });
                             }}
-                            className="px-3 py-1.5 rounded-lg bg-white/95 text-slate-900 text-xs font-bold flex items-center gap-1 shadow hover:bg-white cursor-pointer"
+                            className="px-3.5 py-2 rounded-lg bg-white/95 text-slate-900 text-xs font-bold flex items-center gap-1.5 shadow hover:bg-white cursor-pointer"
                           >
-                            <ZoomIn className="w-3.5 h-3.5 text-red-600" />
-                            <span>{t.products.viewFull || '查看原图'}</span>
-                          </button>
-
-                          <button
-                            onClick={(e) => triggerProductUpload(product.id, e)}
-                            className="px-2.5 py-1.5 rounded-lg bg-slate-900/90 text-white text-xs font-medium flex items-center gap-1 border border-white/20 hover:bg-slate-900 cursor-pointer"
-                          >
-                            <UploadCloud className="w-3.5 h-3.5 text-emerald-400" />
-                            <span>{t.products.replace || '更换'}</span>
+                            <ZoomIn className="w-4 h-4 text-red-600" />
+                            <span>{t.products.viewFull || '查看高清大图'}</span>
                           </button>
                         </div>
                       </div>
                     ) : (
-                      /* Click-to-Upload Visual Placeholder */
+                      /* Default Product Visual Box */
                       <div
-                        onClick={(e) => triggerProductUpload(product.id, e)}
+                        onClick={() => setSelectedProductForDetail(product)}
                         className="relative w-full h-full p-4 flex flex-col justify-between bg-gradient-to-br from-slate-100 via-slate-50 to-slate-100 cursor-pointer hover:bg-red-50/50 transition-colors"
                       >
                         <div className="flex items-center justify-between">
                           <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-red-600 text-white font-bold">
-                            {isProprietary
-                              ? (t.products.proprietaryProof || '特菲奥实拍')
-                              : (t.products.officialProof || '官方实拍')}
+                            {product.brand}
                           </span>
                           <span className="text-[10px] font-mono text-slate-500 bg-white px-1.5 py-0.5 rounded border border-slate-200">
                             HD
@@ -560,21 +455,17 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
                         {/* Center Graphic */}
                         <div className="text-center my-auto">
                           <div className="w-10 h-10 rounded-full bg-white shadow-sm border border-slate-200 flex items-center justify-center mx-auto mb-2 text-red-600 group-hover:scale-110 transition-transform">
-                            <Camera className="w-5 h-5" />
+                            <ZoomIn className="w-5 h-5" />
                           </div>
                           <div className="text-xs font-bold text-slate-800">
-                            {t.products.clickToUpload || '点击上传商品实拍照'}
-                          </div>
-                          <div className="text-[10px] text-slate-500 mt-0.5">
-                            {t.products.autoFitDesc || '支持相机原图 · 自动等比自适应'}
+                            {product.name}
                           </div>
                         </div>
 
                         <div className="flex items-center justify-between text-[10px] text-slate-400 border-t border-slate-200/60 pt-1.5">
-                          <span className="truncate max-w-[120px]">{product.brand}</span>
+                          <span className="truncate max-w-[120px]">{product.specification}</span>
                           <span className="font-semibold text-red-600 flex items-center gap-0.5">
-                            <UploadCloud className="w-3 h-3" />
-                            <span>{t.products.selectFile || '点击选择'}</span>
+                            <span>{t.products.viewSpecs || '查看详情'}</span>
                           </span>
                         </div>
                       </div>
@@ -618,30 +509,22 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
                   </p>
                 </div>
 
-                {/* Card Actions - Exact Button in position of image.png */}
-                <div className="space-y-2 pt-1 border-t border-slate-100">
-                  <button
-                    onClick={(e) => triggerProductUpload(product.id, e)}
-                    className="w-full py-2 px-3 rounded-xl bg-slate-50 hover:bg-red-50 text-slate-700 hover:text-red-600 text-xs font-semibold border border-slate-200 hover:border-red-300 transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
-                  >
-                    <UploadCloud className="w-3.5 h-3.5 text-red-600" />
-                    <span>{photoUrl ? (t.products.replacePhoto || '替换实拍原图') : (t.products.uploadPhoto || '上传实拍原图')}</span>
-                  </button>
-
+                {/* Clean Professional Card Actions */}
+                <div className="pt-2 border-t border-slate-100">
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       onClick={() => setSelectedProductForDetail(product)}
-                      className="py-1.5 px-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 text-[11px] font-bold transition-all flex items-center justify-center gap-1 cursor-pointer"
+                      className="py-2 px-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                     >
-                      <Eye className="w-3 h-3 text-slate-600" />
+                      <Eye className="w-3.5 h-3.5 text-slate-600" />
                       <span>{t.products.viewSpecs || 'B2B规格'}</span>
                     </button>
 
                     <button
                       onClick={() => onRequestSample(`${product.brand} - ${product.name}`)}
-                      className="py-1.5 px-2 rounded-lg bg-slate-900 hover:bg-red-600 text-white text-[11px] font-bold transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer"
+                      className="py-2 px-2.5 rounded-xl bg-slate-900 hover:bg-red-600 text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm hover:shadow-md cursor-pointer"
                     >
-                      <FileText className="w-3 h-3" />
+                      <FileText className="w-3.5 h-3.5" />
                       <span>{t.products.inquireSample || '索样'}</span>
                     </button>
                   </div>

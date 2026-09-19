@@ -369,18 +369,9 @@ export const RetailPresenceSection: React.FC<RetailPresenceSectionProps> = ({ cu
                 </div>
 
                 <div>
-                  <p className="text-xs text-slate-600 line-clamp-2 border-t border-slate-100 pt-3 mb-3">
+                  <p className="text-xs text-slate-600 line-clamp-2 border-t border-slate-100 pt-3">
                     {item.highlight}
                   </p>
-
-                  {/* Action Button at bottom of card */}
-                  <button
-                    onClick={(e) => triggerUpload(item.id, e)}
-                    className="w-full py-2 px-3 rounded-xl bg-slate-50 hover:bg-red-50 text-slate-700 hover:text-red-600 text-xs font-semibold border border-slate-200 hover:border-red-300 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
-                  >
-                    <UploadCloud className="w-3.5 h-3.5 text-red-600" />
-                    <span>{photoUrl ? (t.retailPresence.replaceBtn || '替换实拍原图') : (t.retailPresence.uploadBtn || '上传现场实拍原图')}</span>
-                  </button>
                 </div>
               </div>
             );
