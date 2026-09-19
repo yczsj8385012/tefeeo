@@ -1,7 +1,7 @@
 import React from 'react';
 import { Language } from '../types';
 import { translations, languageOptions } from '../translations';
-import { ArrowRight, ShieldCheck, CheckCircle2, Store, ChevronRight, Ship, Globe2, Phone } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Store, ChevronRight, Ship, Globe2 } from 'lucide-react';
 
 interface HeroProps {
   currentLang: Language;
@@ -15,18 +15,87 @@ interface HeroProps {
 export const Hero: React.FC<HeroProps> = ({
   currentLang,
   onOpenInquiry,
-  onOpenLicenseModal,
-  onScrollToDistribution,
-  onScrollToCalculator,
+  onOpenLicenseModal: _onOpenLicenseModal,
+  onScrollToDistribution: _onScrollToDistribution,
+  onScrollToCalculator: _onScrollToCalculator,
   onNavigateToProducts,
 }) => {
   const t = translations[currentLang];
   const isRtl = languageOptions.find((l) => l.code === currentLang)?.dir === 'rtl';
 
+  // Dual-Pillar localized content for Scheme B
+  const pillarContent: Record<Language, {
+    importTitle: string;
+    importBadge: string;
+    importDesc: string;
+    exportTitle: string;
+    exportBadge: string;
+    exportDesc: string;
+  }> = {
+    zh: {
+      importTitle: '进口代理 · 国外知名品牌入华总代',
+      importBadge: '覆盖数千家商超KA',
+      importDesc: '海外优质知名品牌（如泰国皇室同款 IMPERIAL 因贝利曲奇等）大中华区总代，深度铺设中国全渠道网络。',
+      exportTitle: '全球出口 · 特菲奥自有品牌直供',
+      exportBadge: '现货源头直供出海',
+      exportDesc: '特菲奥自主高品质休闲食品现货直供，战略直达东南亚、南亚、中东、非洲等全球大市场，支持大宗直采与定制。',
+    },
+    en: {
+      importTitle: 'Import Agency · Master Partner in China',
+      importBadge: '3,000+ Supermarket Chains',
+      importDesc: 'Master import partner for iconic global brands (e.g. IMPERIAL Danish Cookies) with deep placement across China nationwide.',
+      exportTitle: 'Global Export · Tefeeo Snacks Direct Supply',
+      exportBadge: 'Direct Factory Sourcing',
+      exportDesc: 'Direct export of premium Tefeeo snacks to international buyers across SE Asia, South Asia, Middle East, and Africa.',
+    },
+    th: {
+      importTitle: 'ตัวแทนนำเข้า · แบรนด์ระดับโลกสู่ตลาดจีน',
+      importBadge: 'ซูเปอร์มาร์เก็ตกว่า 3,000+ แห่ง',
+      importDesc: 'ตัวแทนนำเข้าและจัดจำหน่ายคุกกี้ IMPERIAL และแบรนด์ชั้นนำระดับโลกสู่ห้างสรรพสินค้าชั้นนำทั่วประเทศจีน',
+      exportTitle: 'ส่งออกทั่วโลก · แบรนด์ Tefeeo โดยตรง',
+      exportBadge: 'ส่งตรงจากโรงงาน',
+      exportDesc: 'ส่งออกขนมขบเคี้ยวคุณภาพสูงของ Tefeeo สู่ผู้ซื้อในเอเชียตะวันออกเฉียงใต้ เอเชียใต้ ตะวันออกกลาง และแอฟริกา',
+    },
+    vi: {
+      importTitle: 'Đại Diện Nhập Khẩu · Đưa Thương Hiệu Vào TQ',
+      importBadge: '3.000+ Hệ Thống Siêu Thị',
+      importDesc: 'Tổng đại lý nhập khẩu độc quyền các thương hiệu quốc tế (như bánh quy IMPERIAL) phân phối toàn Trung Quốc.',
+      exportTitle: 'Xuất Khẩu Toàn Cầu · Bánh Kẹo Tefeeo Trực Tiếp',
+      exportBadge: 'Nguồn Cung Trực Tiếp',
+      exportDesc: 'Cung cấp trực tiếp các sản phẩm ăn vặt Tefeeo chất lượng cao tới Đông Nam Á, Nam Á, Trung Đông và Châu Phi.',
+    },
+    ja: {
+      importTitle: '輸入総代理 · 海外有名ブランドの中国展開',
+      importBadge: '3,000超の主要スーパー網',
+      importDesc: 'IMPERIALクッキー等の国際有名ブランドの中国総代理店として、全国の量販店・コンビニへ深く配荷展開。',
+      exportTitle: 'グローバル輸出 · 特菲奥(Tefeeo)ブランド直供',
+      exportBadge: '工場直送・大口取引',
+      exportDesc: '特菲奥の高品質スナックを東南アジア・南アジア・中東・アフリカなどの国際バイヤーへ直接輸出供給。',
+    },
+    ko: {
+      importTitle: '수입 총판 · 해외 유명 브랜드 중국 진출',
+      importBadge: '3,000+ 대형 유통망',
+      importDesc: '태국 왕실 납품 IMPERIAL 쿠키 등 글로벌 유명 브랜드의 대중국 총판으로 전국 대형마트 및 편의점 유통.',
+      exportTitle: '글로벌 수출 · Tefeeo 자체 브랜드 직공급',
+      exportBadge: '원스톱 직수출',
+      exportDesc: 'Tefeeo 프리미엄 스낵을 동남아, 남아시아, 중동, 아프리카 등 글로벌 바이어에게 직수출 공급합니다.',
+    },
+    ar: {
+      importTitle: 'وكالة الاستيراد · إدخال العلامات العالمية للصين',
+      importBadge: 'أكثر من 3000 متجر وسوبرماركت',
+      importDesc: 'الوكيل الحصري للعلامات العالمية المرموقة (مثل كوكيز إمبريال) مع شبكة توزيع شاملة في كبرى متاجر الصين.',
+      exportTitle: 'التصدير العالمي · توريد منتجات تيفيو مباشرة',
+      exportBadge: 'توريد مباشر من المصدر',
+      exportDesc: 'تصدير وجبات تيفيو الخفيفة عالية الجودة مباشرة للمشترين في جنوب شرق آسيا وجنوب آسيا والشرق الأوسط وأفريقيا.',
+    },
+  };
+
+  const currentPillar = pillarContent[currentLang] || pillarContent.zh;
+
   return (
     <section
       id="hero-banner-section"
-      className="relative pt-32 pb-20 md:pt-40 md:pb-28 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white overflow-hidden"
+      className="relative pt-32 pb-20 md:pt-40 md:pb-24 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white overflow-hidden"
       dir={isRtl ? 'rtl' : 'ltr'}
     >
       {/* Subtle Background Elements */}
@@ -43,32 +112,62 @@ export const Hero: React.FC<HeroProps> = ({
           </div>
 
           {/* Main Display Headline */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.18] mb-6">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.18] mb-8">
             <span className="block text-white mb-2">{t.hero.titleMain}</span>
             <span className="bg-gradient-to-r from-red-400 via-amber-300 to-red-500 bg-clip-text text-transparent">
               {t.hero.titleHighlight}
             </span>
           </h1>
 
-          {/* Subtitle / Value Proposition */}
-          <p className="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto mb-8 leading-relaxed font-normal">
-            {t.hero.description}
-          </p>
+          {/* Scheme B: Dual-Pillar Structured Value Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto mb-9 text-left">
+            {/* Card 1: Import Agency */}
+            <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800/90 hover:border-red-500/40 transition-all duration-300 backdrop-blur-md flex flex-col justify-between shadow-lg">
+              <div>
+                <div className="flex items-center justify-between mb-2.5">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-lg bg-red-500/10 text-red-400 flex items-center justify-center border border-red-500/20 shrink-0">
+                      <Globe2 className="w-4 h-4" />
+                    </div>
+                    <span className="text-sm sm:text-base font-bold text-white">
+                      {currentPillar.importTitle}
+                    </span>
+                  </div>
+                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-red-950/80 text-red-300 border border-red-800/50 shrink-0">
+                    {currentPillar.importBadge}
+                  </span>
+                </div>
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed pl-0.5">
+                  {currentPillar.importDesc}
+                </p>
+              </div>
+            </div>
 
-          {/* Two Core Target Hubs Pill */}
-          <div className="flex flex-wrap items-center justify-center gap-2.5 mb-8">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-red-950/60 border border-red-500/30 text-xs font-semibold text-red-300">
-              <Globe2 className="w-3.5 h-3.5 text-red-400" />
-              进口板块：IMPERIAL等国际品牌入华总代
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-amber-950/60 border border-amber-500/30 text-xs font-semibold text-amber-300">
-              <Ship className="w-3.5 h-3.5 text-amber-400" />
-              出口板块：特菲奥自主品牌直供东南亚 · 南亚 · 中东 · 非洲
-            </span>
+            {/* Card 2: Export Supply */}
+            <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800/90 hover:border-amber-500/40 transition-all duration-300 backdrop-blur-md flex flex-col justify-between shadow-lg">
+              <div>
+                <div className="flex items-center justify-between mb-2.5">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20 shrink-0">
+                      <Ship className="w-4 h-4" />
+                    </div>
+                    <span className="text-sm sm:text-base font-bold text-white">
+                      {currentPillar.exportTitle}
+                    </span>
+                  </div>
+                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-amber-950/80 text-amber-300 border border-amber-800/50 shrink-0">
+                    {currentPillar.exportBadge}
+                  </span>
+                </div>
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed pl-0.5">
+                  {currentPillar.exportDesc}
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Primary Action Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-10">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-14">
             <button
               id="hero-primary-cta"
               onClick={() => onOpenInquiry('特菲奥品牌海外采购与出口合作')}
@@ -97,27 +196,6 @@ export const Hero: React.FC<HeroProps> = ({
                 <ChevronRight className="w-4 h-4 text-red-400" />
               </button>
             )}
-          </div>
-
-          {/* Corporate Trust Badge & Hotline */}
-          <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
-            <div
-              id="hero-license-badge"
-              onClick={onOpenLicenseModal}
-              className="inline-flex items-center gap-2 text-xs text-slate-300 hover:text-white bg-slate-900/80 hover:bg-slate-800/90 px-4 py-2 rounded-lg border border-slate-800 transition-colors cursor-pointer"
-            >
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-              <span>{t.hero.trustBadge}</span>
-              <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
-            </div>
-
-            <a
-              href="tel:+8601089801090"
-              className="inline-flex items-center gap-1.5 text-xs text-slate-300 bg-slate-900/80 hover:bg-slate-800 px-3 py-2 rounded-lg border border-slate-800"
-            >
-              <Phone className="w-3.5 h-3.5 text-red-400" />
-              <span>官方服务专线: +86-010-89801090 / 400 166 1090</span>
-            </a>
           </div>
         </div>
 
@@ -163,3 +241,4 @@ export const Hero: React.FC<HeroProps> = ({
     </section>
   );
 };
+
