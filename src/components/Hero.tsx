@@ -119,47 +119,47 @@ export const Hero: React.FC<HeroProps> = ({
             </span>
           </h1>
 
-          {/* Scheme B: Dual-Pillar Structured Value Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto mb-9 text-left">
+          {/* Scheme B with Scheme 1 Lighting: Dual-Pillar Structured Value Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4.5 max-w-4xl mx-auto mb-9 text-left">
             {/* Card 1: Import Agency */}
-            <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800/90 hover:border-red-500/40 transition-all duration-300 backdrop-blur-md flex flex-col justify-between shadow-lg">
+            <div className="p-5 sm:p-5.5 rounded-2xl bg-slate-800/85 border border-slate-700/80 hover:border-red-500/50 hover:bg-slate-800/95 transition-all duration-300 backdrop-blur-md flex flex-col justify-between shadow-xl ring-1 ring-white/10 group">
               <div>
-                <div className="flex items-center justify-between mb-2.5">
+                <div className="flex items-center justify-between mb-3 gap-2">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-lg bg-red-500/10 text-red-400 flex items-center justify-center border border-red-500/20 shrink-0">
+                    <div className="w-8 h-8 rounded-lg bg-red-500/20 text-red-300 flex items-center justify-center border border-red-500/40 shrink-0">
                       <Globe2 className="w-4 h-4" />
                     </div>
-                    <span className="text-sm sm:text-base font-bold text-white">
+                    <span className="text-sm sm:text-base font-bold text-white group-hover:text-red-200 transition-colors">
                       {currentPillar.importTitle}
                     </span>
                   </div>
-                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-red-950/80 text-red-300 border border-red-800/50 shrink-0">
+                  <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-red-500/20 text-red-300 border border-red-500/40 shrink-0">
                     {currentPillar.importBadge}
                   </span>
                 </div>
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed pl-0.5">
+                <p className="text-xs sm:text-sm text-slate-200 leading-relaxed pl-0.5">
                   {currentPillar.importDesc}
                 </p>
               </div>
             </div>
 
             {/* Card 2: Export Supply */}
-            <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800/90 hover:border-amber-500/40 transition-all duration-300 backdrop-blur-md flex flex-col justify-between shadow-lg">
+            <div className="p-5 sm:p-5.5 rounded-2xl bg-slate-800/85 border border-slate-700/80 hover:border-amber-500/50 hover:bg-slate-800/95 transition-all duration-300 backdrop-blur-md flex flex-col justify-between shadow-xl ring-1 ring-white/10 group">
               <div>
-                <div className="flex items-center justify-between mb-2.5">
+                <div className="flex items-center justify-between mb-3 gap-2">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20 shrink-0">
+                    <div className="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-300 flex items-center justify-center border border-amber-500/40 shrink-0">
                       <Ship className="w-4 h-4" />
                     </div>
-                    <span className="text-sm sm:text-base font-bold text-white">
+                    <span className="text-sm sm:text-base font-bold text-white group-hover:text-amber-200 transition-colors">
                       {currentPillar.exportTitle}
                     </span>
                   </div>
-                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-amber-950/80 text-amber-300 border border-amber-800/50 shrink-0">
+                  <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 shrink-0">
                     {currentPillar.exportBadge}
                   </span>
                 </div>
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed pl-0.5">
+                <p className="text-xs sm:text-sm text-slate-200 leading-relaxed pl-0.5">
                   {currentPillar.exportDesc}
                 </p>
               </div>
